@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    style="@style/LinearLayout__Vertical_MatchParent">
+
+    <RelativeLayout
+        android:layout_height = "match_parent"
+        android:layout_weight = "1"
+        android:layout_width = "match_parent">
+
+        <ImageView
+            android:id="@+id/iv_review_photo"
+            style="@style/ImageView__MatchParent"
+            android:background="@android:color/black"/>
+
+        <com.sprylab.android.widget.TextureVideoView
+            android:id = "@+id/vv_review_video"
+            android:layout_alignParentRight = "true"
+            android:layout_alignParentLeft = "true"
+            android:layout_centerVertical = "true"
+            android:layout_centerHorizontal = "true"
+            android:layout_centerInParent = "true"
+            android:layout_height = "match_parent"
+            android:layout_width = "match_parent"
+            android:visibility = "visible" />
+
+    </RelativeLayout>
+
+
+    <FrameLayout
+        style="@style/FrameLayout_"
+        android:layout_height="100dp"
+        android:layout_gravity="bottom"
+        android:alpha="0.5"
+        android:background="@color/black">
+
+        <LinearLayout
+            style="@style/LinearLayout__Horizontal_MatchParent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+
+            <Button
+                android:id="@+id/btn_retake"
+                style="@style/Button_"
+                android:layout_gravity="left"
+                android:background="@drawable/selector_transparent"
+                android:text="@string/retake"
+                android:textColor="@color/orange"
+                android:textSize="15sp" />
+
+            <ImageView
+                style="@style/ImageView_Line"
+                android:layout_weight="0.7" />
+
+            <Button
+                android:id="@+id/btn_use"
+                style="@style/Button_"
+                android:background="@drawable/selector_transparent"
+                android:text="@string/use_photo"
+                android:textColor="@color/orange"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:mContext=".NavigationDrawerFragment">
+
+    <LinearLayout
+        style="@style/LinearLayout__Horizontal_MatchParent"
+        android:layout_height="50dp"
+        android:background="@drawable/bg_navigation_drawer_top_bar"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circle_iv_avatar"
+            style="@style/ImageView__MatchParent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/iv_default_avatar" />
+
+        <TextView
+            style="@style/TextView__Title"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0.5"
+            android:gravity="left|center"
+            android:text="Company Name"
+            android:textStyle="bold" />
+
+        <ImageButton
+            style="@style/ImageButton__MatchParent"
+            android:layout_weight="1.2"
+            android:src="@drawable/ibtn_setting" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_dark_in_under_action_bar" />
+
+    <ListView
+        android:id="@+id/lv_in_fragment_navigation_drawer_in_company_feed"
+        style="@style/ListView_"
+        android:background="@drawable/bg_navigation_drawer"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" />
+
+    <Button
+        android:id="@+id/btn_log_out"
+        style="@style/Button_"
+        android:layout_weight="1.8"
+        android:alpha="0.5"
+        android:gravity="left|center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/log_out"
+        android:textSize="15sp"
+        android:visibility="gone" />
+
+</LinearLayout>

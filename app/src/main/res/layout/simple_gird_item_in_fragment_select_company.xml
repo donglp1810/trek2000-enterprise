@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <FrameLayout
+        style="@style/FrameLayout_"
+        android:layout_width="wrap_content"
+        android:layout_height="90dp">
+
+        <ImageButton
+            style="@style/ImageButton__WrapContent"
+            android:layout_width="wrap_content"
+            android:background="@drawable/selector_transparent"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/nbc" />
+
+        <ImageView
+            style="@style/ImageView__WrapContent"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="right|top"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/badger_red" />
+
+        <TextView
+            style="@style/TextView__Content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="right|top"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:text="0" />
+
+    </FrameLayout>
+
+    <TextView
+        style="@style/TextView__Title"
+        android:layout_height="wrap_content"
+        android:text="NBC"
+        android:textStyle="bold" />
+
+</LinearLayout>

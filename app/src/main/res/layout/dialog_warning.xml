@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_title_in_dialog_warning"
+        style="@style/TextView__Title"
+        android:layout_height="match_parent"
+        android:paddingBottom="5dp"
+        android:paddingTop="20dp"
+        android:textColor="@color/orange"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_content_in_dialog_warning"
+        style="@style/TextView__Content"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:padding="20dp"
+        android:singleLine="false"
+        android:textColor="@color/black"
+        android:textSize="17dp" />
+
+    <Button
+        android:id="@+id/btn_ok_in_dialog_warning"
+        style="@style/Button_"
+        android:layout_weight="1.1"
+        android:background="@color/orange"
+        android:text="@string/ok"
+        android:textSize="25sp" />
+
+
+</LinearLayout>

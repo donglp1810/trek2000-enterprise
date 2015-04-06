@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="layout_height_item_in_custom_gallery">120</integer>
+
+    <integer name="layout_width_item_in_custom_gallery">120</integer>
+
+</resources>

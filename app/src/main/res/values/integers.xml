@@ -1,0 +1,12 @@
+<resources>
+    <!--
+         Customize dimensions originally defined in res/values/dimens.xml (such as
+         screen margins) for sw600dp devices (e.g. 7" tablets) here.
+    -->
+    <integer name="height_album_view">350</integer>
+    <integer name="height_detail_view">510</integer>
+    <integer name="height_file_view">230</integer>
+    <integer name="width_album_view">355</integer>
+    <integer name="width_file_view">230</integer>
+
+</resources>

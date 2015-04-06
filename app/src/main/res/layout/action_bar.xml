@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/gray_light_in_action_bar"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <FrameLayout
+        style="@style/FrameLayout_"
+        android:layout_width="wrap_content">
+
+        <ImageButton
+            android:id="@+id/ibtn_drawer_in_action_bar"
+            style="@style/ImageButton__WrapContent"
+            android:layout_width="wrap_content"
+            android:background="@drawable/selector_transparent"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:src="@drawable/drawer" />
+
+        <ImageView
+            style="@style/ImageView__WrapContent"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="right|top"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/badger_red" />
+
+        <TextView
+            android:id="@+id/tv_number_of_notifications_in_drawer"
+            style="@style/TextView__Content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="right|top"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:text="0" />
+
+    </FrameLayout>
+
+    <ImageButton
+        android:id="@+id/ibtn_back_in_action_bar"
+        style="@style/ImageButton__WrapContent"
+        android:layout_width="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ibtn_back"
+        android:visibility="gone" />
+
+    <LinearLayout
+        style="@style/LinearLayout__Horizontal_WrapContent"
+        android:layout_width="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_title_in_action_bar"
+            style="@style/TextView__Title"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:text="All Company"
+            android:textStyle="bold" />
+
+        <ImageView
+            style="@style/ImageView__WrapContent"
+            android:layout_width="wrap_content"
+            android:src="@drawable/iv_arrow_down" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/ibtn_add_in_action_bar"
+        style="@style/ImageView__WrapContent"
+        android:layout_width="wrap_content"
+        android:src="@drawable/ibtn_add"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_add_to_group_in_action_bar"
+        style="@style/TextView__Title"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:text="@string/add"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:id="@+id/ibtn_create_group_in_action_bar"
+        style="@style/ImageView__WrapContent"
+        android:layout_width="wrap_content"
+        android:src="@drawable/ibtn_create_group"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_done_in_action_bar"
+        style="@style/TextView__Title"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:text="@string/done"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_download_in_action_bar"
+        style="@style/TextView__Title"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:text="@string/download"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:id="@+id/ibtn_upload_in_action_bar"
+        style="@style/ImageView__WrapContent"
+        android:layout_width="wrap_content"
+        android:background="@drawable/selector_transparent"
+        android:src="@drawable/ibtn_upload"
+        android:visibility="visible" />
+
+</LinearLayout>
