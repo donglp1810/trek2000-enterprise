@@ -1,0 +1,7 @@
+<resources>
+
+    <dimen name="layout_height_circleIv_in_simple_list_item_select_company">150dp</dimen>
+    <dimen name="layout_height_circleIv_in_setting_fragment">100dp</dimen>
+    <dimen name="layout_height_circleIv_in_simple_list_item_all_company_feed">30dp</dimen>
+
+</resources>

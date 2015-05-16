@@ -140,14 +140,14 @@ public class SelectCompanyAdapter extends BaseAdapter {
                 // Set title also
                 mAl.get(pos).setTitle(mContext.getString(R.string.card_management));
                 break;
-            case Position.feeds:
+            case Position.home:
                 if (selected)
                     mIv.setImageResource(R.drawable.iv_feeds_selected);
                 else
                     mIv.setImageResource(R.drawable.iv_feeds_unselected);
 
                 // Set title also
-                mAl.get(pos).setTitle(mContext.getString(R.string.feeds));
+                mAl.get(pos).setTitle(mContext.getString(R.string.home));
                 break;
             case Position.group_management:
                 if (selected)

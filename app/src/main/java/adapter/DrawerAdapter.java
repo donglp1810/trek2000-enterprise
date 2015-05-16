@@ -119,7 +119,7 @@ public class DrawerAdapter extends BaseAdapter {
                     mAl.get(pos).getNumberOfNotifications() + "");
 
         // Notifications line should set orange background for Number Of Notifications
-        if (pos == 1) {
+        if (pos == 1 || pos == 5) {
             ((TextView) viewHolder.mTvNumberOfNotifications.findViewWithTag(pos))
                     .setBackgroundResource(R.drawable.custom_tv_number_of_notifications_in_notifications);
             ((TextView) viewHolder.mTvNumberOfNotifications.findViewWithTag(pos))
@@ -140,14 +140,14 @@ public class DrawerAdapter extends BaseAdapter {
                 // Set title also
                 mAl.get(pos).setTitle(mContext.getString(R.string.card_management));
                 break;
-            case Position.feeds:
+            case Position.home:
                 if (selected)
-                    mIv.setImageResource(R.drawable.iv_feeds_selected);
+                    mIv.setImageResource(R.drawable.iv_home_selected);
                 else
-                    mIv.setImageResource(R.drawable.iv_feeds_unselected);
+                    mIv.setImageResource(R.drawable.iv_home_unselected);
 
                 // Set title also
-                mAl.get(pos).setTitle(mContext.getString(R.string.feeds));
+                mAl.get(pos).setTitle(mContext.getString(R.string.home));
                 break;
             case Position.group_management:
                 if (selected)
@@ -175,6 +175,14 @@ public class DrawerAdapter extends BaseAdapter {
 
                 // Set title also
                 mAl.get(pos).setTitle(mContext.getString(R.string.user_management));
+                break;
+            case Position.setting:
+                if (selected)
+                    mIv.setImageResource(R.drawable.iv_setting_selected);
+                else
+                    mIv.setImageResource(R.drawable.iv_setting_unselected);
+                // Set title also
+                mAl.get(pos).setTitle(mContext.getString(R.string.setting));
                 break;
         }
     }

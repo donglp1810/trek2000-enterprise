@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    >
+    <LinearLayout
+        style="@style/LinearLayout__Vertical_MatchParent">
+
+        <ImageView
+            android:layout_height="200dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circleiv_avatar_in_simple_list_item_company_feed"
+            android:layout_height = "@dimen/layout_height_circleIv_in_setting_fragment"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/iv_default_avatar" />
+
+        <ImageView
+            android:layout_height="20dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"/>
+
+        <EditText
+            android:background="@drawable/custom_et_in_setting_fragment"
+            android:gravity="center|left"
+            android:padding="10dp"
+            android:text="Cable News Network"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            style="@style/EditText_" />
+
+        <ImageView
+            android:layout_height="10dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"/>
+
+        <EditText
+            android:background="@drawable/custom_et_in_setting_fragment"
+            android:gravity="center|left"
+            android:padding="10dp"
+            android:text="CNN"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            style="@style/EditText_" />
+
+        <ImageView
+            android:layout_height="10dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"/>
+
+        <EditText
+            android:background="@drawable/custom_et_in_setting_fragment"
+            android:gravity="center|left"
+            android:padding="10dp"
+            android:singleLine="false"
+            android:text="A collection of individuals who have regular contact and frequent interaction mutual influence, common feeling of camaraderie, and who work together to achieve a common set of goals."
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            style="@style/EditText_" />
+
+        <ImageView
+            android:layout_height="10dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"/>
+
+        <EditText
+            android:background="@drawable/custom_et_in_setting_fragment"
+            android:gravity="center|left"
+            android:padding="10dp"
+            android:text="5523 6th Street West"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            style="@style/EditText_"
+            />
+
+        <ImageView
+            android:layout_height="10dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"/>
+
+        <LinearLayout
+            style="@style/LinearLayout__Horizontal_WrapContent">
+
+            <EditText
+                android:background="@drawable/custom_et_in_setting_fragment"
+                android:gravity="center|left"
+                android:padding="10dp"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                style="@style/EditText_" />
+
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_weight="1.85"/>
+
+            <EditText
+                android:background="@drawable/custom_et_in_setting_fragment"
+                android:gravity="center|left"
+                android:padding="10dp"
+                android:text="Geneva"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                style="@style/EditText_" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_height="10dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"/>
+
+        <LinearLayout
+            style="@style/LinearLayout__Horizontal_WrapContent">
+
+            <EditText
+                android:background="@drawable/custom_et_in_setting_fragment"
+                android:gravity="center|left"
+                android:padding="10dp"
+                android:text="60134"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                style="@style/EditText_" />
+
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_weight="1.85"/>
+
+            <EditText
+                android:background="@drawable/custom_et_in_setting_fragment"
+                android:gravity="center|left"
+                android:padding="10dp"
+                android:text="Italy"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                style="@style/EditText_" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_height="10dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"/>
+
+        <LinearLayout
+            style="@style/LinearLayout__Horizontal_WrapContent">
+
+            <EditText
+                android:background="@drawable/custom_et_in_setting_fragment"
+                android:gravity="center|left"
+                android:padding="10dp"
+                android:text="+39"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                style="@style/EditText_" />
+
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_weight="1.85"/>
+
+            <EditText
+                android:background="@drawable/custom_et_in_setting_fragment"
+                android:gravity="center|left"
+                android:padding="10dp"
+                android:text="98 854 2367"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                style="@style/EditText_" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_height="10dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"/>
+
+        <LinearLayout
+            style="@style/LinearLayout__Horizontal_WrapContent">
+
+            <EditText
+                android:background="@drawable/custom_et_in_setting_fragment"
+                android:gravity="center|left"
+                android:padding="10dp"
+                android:text="+39"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                style="@style/EditText_" />
+
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_weight="1.85"/>
+
+            <EditText
+                android:background="@drawable/custom_et_in_setting_fragment"
+                android:gravity="center|left"
+                android:padding="10dp"
+                android:text="99 588 46112"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                style="@style/EditText_" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_height="10dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"/>
+
+        <EditText
+            android:background="@drawable/custom_et_in_setting_fragment"
+            android:gravity="center|left"
+            android:padding="10dp"
+            android:text="4716 3511 4459 4375"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            style="@style/EditText_" />
+
+        <ImageView
+            android:layout_height="10dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"/>
+
+        <EditText
+            android:background="@drawable/custom_et_in_setting_fragment"
+            android:gravity="center|left"
+            android:padding="10dp"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            style="@style/EditText_" />
+
+        <ImageView
+            android:layout_height="10dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"/>
+
+        <EditText
+            android:background="@drawable/custom_et_in_setting_fragment"
+            android:gravity="center|left"
+            android:padding="10dp"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            style="@style/EditText_" />
+
+        <ImageView
+            android:layout_height="20dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"/>
+
+    <LinearLayout
+        style="@style/LinearLayout__Horizontal_WrapContent">
+
+        <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_weight="1"/>
+
+        <Button
+            android:background="@drawable/custom_btn_in_setting_fragment"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_weight="0.5"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:text="@string/delete_company"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="17sp"
+            style="@style/Button_" />
+
+        <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_height="10dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+</ScrollView>

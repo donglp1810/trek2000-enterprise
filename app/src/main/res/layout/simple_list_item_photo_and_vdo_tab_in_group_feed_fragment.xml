@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:padding="10dp"
+        style="@style/LinearLayout__Vertical_MatchParent">
+
+        <TextView
+            android:id="@+id/tv_elapsed_time_in_simple_list_photo_and_vdo_tab_in_group_feed_fragment"
+            android:gravity="left|center"
+            android:layout_height="match_parent"
+            android:text="Jun 17, 2015"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            style="@style/TextView__Title"/>
+
+        <TextView
+            android:id="@+id/tv_file_number_in_simple_list_photo_and_vdo_tab_in_group_feed_fragment"
+            android:gravity="left|center"
+            android:layout_height="match_parent"
+            android:text="4 photos, 1 videos"
+            android:textSize="18sp"
+            style="@style/TextView__Title"/>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_height="match_parent"
+        android:layout_weight="0.2"
+        style="@style/FrameLayout_">
+
+        <GridView
+            android:background = "@android:color/white"
+            android:id = "@+id/gv_in_simple_list_photo_and_vdo_tab_in_group_feed_fragment"
+            android:columnWidth = "@dimen/column_width_gv_in_all_company_feed"
+            android:layout_margin = "5dp"
+            android:numColumns = "3"
+            android:verticalSpacing = "5dp"
+            android:horizontalSpacing = "10dp"
+            android:layout_height="230dp"
+            style = "@style/GridView_" />
+
+    </FrameLayout>
+
+</LinearLayout>

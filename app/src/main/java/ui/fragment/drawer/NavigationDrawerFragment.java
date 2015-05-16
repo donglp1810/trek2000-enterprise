@@ -245,6 +245,9 @@ public class NavigationDrawerFragment extends Fragment
         // Group management
         DrawerItem mDiGroupManagement = new DrawerItem(false, 0);
         mAlDrawer.add(mDiGroupManagement);
+        //setting
+        DrawerItem mDiSetting = new DrawerItem(false, -1);
+        mAlDrawer.add(mDiSetting);
 
         // Set adapter
         drawerAdapter = new DrawerAdapter(

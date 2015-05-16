@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <ImageView
+        style="@style/ImageView__MatchParent" />
+
+    <LinearLayout
+        android:layout_weight="0.8"
+        style="@style/LinearLayout__Vertical_MatchParent">
+
+        <TextView
+            android:gravity="center"
+            android:text="@string/no_contents"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textSize="40sp"
+            style="@style/TextView__Title"/>
+
+        <TextView
+            android:gravity="center"
+            android:text="@string/be_the_first_uploader_please_click_button_below"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:singleLine="false"
+            android:textSize="30sp"
+            style="@style/TextView__Title"/>
+
+        <Button
+            android:background="@drawable/custom_btn_in_photo_and_vdo_tab_no_content_in_group_feed_fragment"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="0.5"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:paddingLeft="70dp"
+            android:paddingRight="70dp"
+            android:text="@string/uploaded__"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            style="@style/Button_" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_weight="0.8"
+        style="@style/ImageView__MatchParent" />
+
+</LinearLayout>

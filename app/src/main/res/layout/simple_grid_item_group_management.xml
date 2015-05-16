@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleiv_item_in_simple_list_item_group_management"
+        android:layout_height = "@dimen/layout_height_circleIv_in_simple_list_item_select_company"
+        android:layout_width="match_parent"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/iv_empty_album" />
+
+    <TextView
+        android:id="@+id/tv_group_name_in_simple_list_item_group_management"
+        android:layout_gravity="center"
+        android:text="Group Name (12)"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        style="@style/TextView__Title"/>
+
+    <ImageView
+        android:layout_height="10dp"
+        style="@style/ImageView__WrapContent" />
+
+    <Button
+        android:background="@drawable/custom_btn_comp_name"
+        android:id="@+id/btn_file_number_in_simple_list_item_group_management"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="1987 files"
+        android:textSize="16sp"
+        style="@style/Button_"/>
+
+</LinearLayout>

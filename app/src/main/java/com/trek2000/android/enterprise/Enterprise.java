@@ -1,9 +1,11 @@
 package com.trek2000.android.enterprise;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -17,7 +19,10 @@ import define.Constants;
 import singleton.Item;
 import singleton.User;
 import ui.activity.CustomGallery;
+import ui.fragment.company.AllCompanyFeedFragment;
+import ui.fragment.company.SelectCompanyFragment;
 import ui.fragment.drawer.NavigationDrawerFragment;
+import ui.fragment.drawer.NavigationDrawerInNotificationsFragment;
 
 import static define.SharedPreference.PREFS;
 import static define.SharedPreference.mSp;
@@ -46,6 +51,7 @@ public class Enterprise extends ActionBarActivity implements NavigationDrawerFra
     private ImageButton mIbtnDrawer;
     private ImageButton mIbtnUpload;
     private NavigationDrawerFragment mNavigationDrawerFragment;
+    private NavigationDrawerInNotificationsFragment mNavigationDrawerInNotificationsFragment;
 
     @Override
     public void onClick(View v) {
@@ -74,6 +80,24 @@ public class Enterprise extends ActionBarActivity implements NavigationDrawerFra
                  */
                 break;
             case R.id.ibtn_drawer_in_action_bar:
+                //check if is in all company feed or select company show NavigationDrawerInNotificationsFragment
+                // else if is in company feed show NavigationDrawerFragment
+                Log.i("" ,"AllCompanyFeedFragment.IS_IN_ALL_COMPANY_FEED_FRAGMENT " + AllCompanyFeedFragment.IS_IN_ALL_COMPANY_FEED_FRAGMENT);
+                Log.i("" ,"SelectCompanyFragment.IS_IN_SELECT_COMPANY_FRAGMENT " + SelectCompanyFragment.IS_IN_SELECT_COMPANY_FRAGMENT);
+//            if (AllCompanyFeedFragment.IS_IN_ALL_COMPANY_FEED_FRAGMENT ||
+//                    SelectCompanyFragment.IS_IN_SELECT_COMPANY_FRAGMENT) {
+//                /**
+//                 * Check the navigation bar was showing or not
+//                 */
+//                if (!NavigationDrawerInNotificationsFragment.mViewContainer.isShown()) {
+//                    NavigationDrawerInNotificationsFragment.mDrawerLayout
+//                            .openDrawer(NavigationDrawerInNotificationsFragment.mViewContainer);
+//                } else {
+//                    NavigationDrawerInNotificationsFragment.mDrawerLayout
+//                            .closeDrawer(NavigationDrawerInNotificationsFragment.mViewContainer);
+//                }
+//
+//            } else {
                 /**
                  * Check the navigation bar was showing or not
                  */
@@ -84,6 +108,7 @@ public class Enterprise extends ActionBarActivity implements NavigationDrawerFra
                     NavigationDrawerFragment.mDrawerLayout
                             .closeDrawer(NavigationDrawerFragment.mViewContainer);
                 }
+//            }
                 break;
             case R.id.ibtn_upload_in_action_bar:
                 /**
@@ -116,11 +141,15 @@ public class Enterprise extends ActionBarActivity implements NavigationDrawerFra
                  */
                 break;
             case R.id.tv_title_in_action_bar:
+                //TODO go to all company fragment
+                getSupportFragmentManager().beginTransaction().replace(
+                        R.id.fl_in_activity_enterprise, SelectCompanyFragment.newInstance()
+                ).commitAllowingStateLoss();
+                mTvTitle.setText(getString(R.string.all_company));
                 break;
 
         }
     }
-
     /**
      * @param savedInstanceState
      */
@@ -128,7 +157,6 @@ public class Enterprise extends ActionBarActivity implements NavigationDrawerFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enterprise);
-
         /**
          * Action Bar
          */
@@ -195,8 +223,15 @@ public class Enterprise extends ActionBarActivity implements NavigationDrawerFra
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-    }
 
+        // Set up the Drawer Layout.
+        mNavigationDrawerInNotificationsFragment.setUp(
+                R.id.navigation_drawer_in_notifications,
+                (DrawerLayout) findViewById(R.id.drawer_layout_in_notifications));
+
+        //load all companay feed
+        loadAllCompanyFeed();
+    }
     private void initialVariables() {
         mIbtnAdd = (ImageButton) findViewById(R.id.ibtn_add_in_action_bar);
         mIbtnBack = (ImageButton) findViewById(R.id.ibtn_back_in_action_bar);
@@ -206,10 +241,18 @@ public class Enterprise extends ActionBarActivity implements NavigationDrawerFra
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
+        mNavigationDrawerInNotificationsFragment = (NavigationDrawerInNotificationsFragment)
+                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer_in_notifications);
+
         mTvTitle = (TextView) findViewById(R.id.tv_title_in_action_bar);
     }
 
     /**
      * Basic methods
      */
+    private void loadAllCompanyFeed() {
+        getSupportFragmentManager().beginTransaction().replace(
+                R.id.fl_in_activity_enterprise, AllCompanyFeedFragment.newInstance()
+        ).commitAllowingStateLoss();
+    }
 }

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    >
+
+    <TextView
+        android:gravity="left|center"
+        android:text="@string/about"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        style="@style/TextView__Title"/>
+
+    <ImageView
+        android:layout_height="10dp"
+        style = "@style/ImageView__WrapContent"/>
+
+    <EditText
+        android:background="@drawable/custom_et_in_setting_tab_in_group_feed_fragment"
+        android:gravity="left|center"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:text="Photographer"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        style="@style/EditText_"/>
+
+    <ImageView
+        android:layout_height="10dp"
+        style = "@style/ImageView__WrapContent"/>
+
+    <EditText
+        android:background="@drawable/custom_et_in_setting_fragment"
+        android:enabled="false"
+        android:gravity="left|center"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:singleLine="false"
+        android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever."
+        android:textSize="20sp"
+        style="@style/EditText_"/>
+
+    <ImageView
+        android:layout_height="10dp"
+        style = "@style/ImageView__WrapContent"/>
+
+    <TextView
+        android:gravity="left|center"
+        android:text="@string/member_approval"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        style="@style/TextView__Title"/>
+
+    <ImageView
+        android:layout_height="10dp"
+        style = "@style/ImageView__WrapContent"/>
+
+    <CheckBox
+        android:button="@drawable/custom_cb_in_setting_tab_in_group_feed_fragment"
+        android:padding="5dp"
+        android:text="@string/any_member_can_add_or_approve_members"
+        android:textSize="20sp"
+        android:textColor="@color/black_text_in_action_bar"
+        style = "@style/CheckBox_" />
+
+    <ImageView
+        android:layout_height="10dp"
+        style = "@style/ImageView__WrapContent"/>
+
+    <CheckBox
+        android:button="@drawable/custom_cb_in_setting_tab_in_group_feed_fragment"
+        android:checked="false"
+        android:padding="5dp"
+        android:text="@string/any_member_can_add_members_but_an_admin_must_approve_them"
+        android:textSize="20sp"
+        android:textColor="@color/black_text_in_action_bar"
+        style = "@style/CheckBox_" />
+
+    <ImageView
+        android:layout_height="20dp"
+        style = "@style/ImageView__WrapContent"/>
+
+    <Button
+        android:background="@drawable/custom_btn_in_setting_fragment"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_weight="0.5"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:text="@string/delete_group"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="17sp"
+        style="@style/Button_" />
+
+</LinearLayout>

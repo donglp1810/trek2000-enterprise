@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import define.Position;
 import model.DrawerItem;
 import ui.fragment.drawer.NavigationDrawerFragment;
+import ui.fragment.group_management.GroupManagementFragment;
+import ui.fragment.setting.SettingFragment;
 
 /**
  * Created by trek2000 on 12/2/2015.
@@ -61,17 +63,20 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
             case Position.card_management:
                 fragment = new Fragment();
                 break;
-            case Position.feeds:
+            case Position.home:
                 fragment = new Fragment();
                 break;
             case Position.group_management:
-                fragment = new Fragment();
+                fragment = new GroupManagementFragment();
                 break;
             case Position.notifications:
                 fragment = new Fragment();
                 break;
             case Position.user_management:
                 fragment = new Fragment();
+                break;
+            case Position.setting:
+                fragment = SettingFragment.newInstance();
                 break;
         }
 

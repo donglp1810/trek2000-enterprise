@@ -318,7 +318,7 @@ public class Utils {
      * @param context
      * @param filename
      * @return
-     * @throws java.io.IOException
+     * @throws IOException
      */
     public static Drawable getAssetImage(Context context, String filename) throws IOException {
         AssetManager mAm = context.getResources().getAssets();

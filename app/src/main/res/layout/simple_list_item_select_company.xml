@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleiv_item_in_simple_list_item_select_company"
+        android:layout_height = "@dimen/layout_height_circleIv_in_simple_list_item_select_company"
+        android:layout_width="match_parent"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:src="@drawable/iv_empty_album" />
+
+    <TextView
+        android:id="@+id/tv_company_number_in_simple_list_item_select_company"
+        android:text="(5)"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="50dp"
+        style="@style/TextView__Title"/>
+
+    <FrameLayout
+        android:layout_gravity="right|top"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="45dp"
+        style="@style/FrameLayout_"
+        android:layout_width="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_badge_in_simple_list_item_select_company"
+            style="@style/ImageView__WrapContent"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="right|top"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/badger_red" />
+
+        <TextView
+            android:id="@+id/tv_badge_number_in_simple_list_item_select_company"
+            style="@style/TextView__Content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="right|top"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:text="0"
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_company_name_in_simple_list_item_select_company"
+        android:text="Company Name"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_gravity="bottom"
+        style="@style/TextView__Title"/>
+
+</FrameLayout>

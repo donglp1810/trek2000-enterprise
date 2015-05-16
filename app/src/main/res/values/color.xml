@@ -31,6 +31,10 @@
     <color name="orange_light">#FFFFC502</color>
     <color name="red_in_badget">#FF3B2F</color>
     <color name="red_light">#FFFE6653</color>
+    <color name="red_light_in_btn_setting_fragment">#FFD66B69</color>
+    <color name="transparent">@android:color/transparent</color>
     <color name="white">#FFFFFFFF</color>
     <color name="yellow_light">#FFFFF9E3</color>
+    <color name="radio_button_selected_color">#ff33b5e5</color>
+    <color name="radio_button_unselected_color">@android:color/transparent</color>
 </resources>

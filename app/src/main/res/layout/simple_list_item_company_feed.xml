@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:padding="10dp"
+        style="@style/LinearLayout__Horizontal_MatchParent">
+
+        <LinearLayout
+            android:gravity="top"
+            android:layout_weight="1"
+            android:paddingBottom="30dp"
+            style="@style/LinearLayout__Vertical_MatchParent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circleiv_avatar_in_simple_list_item_company_feed"
+                android:layout_gravity="top"
+                android:layout_height = "@dimen/layout_height_circleIv_in_simple_list_item_all_company_feed"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/iv_empty_album" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="0.2"
+            android:paddingLeft="10dp"
+            style="@style/LinearLayout__Vertical_MatchParent">
+
+            <LinearLayout
+                style="@style/LinearLayout__Horizontal_MatchParent">
+
+                <TextView
+                    android:id="@+id/tv_user_name_in_simple_list_item_company_feed"
+                    android:gravity="left|center"
+                    android:layout_height="match_parent"
+                    android:text="User Name"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    style="@style/TextView__Title"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/LinearLayout__Horizontal_MatchParent">
+
+                <TextView
+                    android:id="@+id/tv_file_number_uploaded_in_simple_list_item_company_feed"
+                    android:gravity="left|center"
+                    android:layout_height="match_parent"
+                    android:text="uploaded 12 photos to"
+                    style="@style/TextView__Title"/>
+
+                <TextView
+                    android:id="@+id/tv_group_name_in_simple_list_item_company_feed"
+                    android:gravity="left|center"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.4"
+                    android:paddingLeft="5dp"
+                    android:text="Group name"
+                    android:textColor="@color/orange"
+                    style="@style/TextView__Title"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_elapsed_time_in_simple_list_item_company_feed"
+                android:gravity="left|center"
+                android:layout_height="match_parent"
+                android:text="22 mins"
+                android:textColor="@color/gray"
+                style="@style/TextView__Title"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_height="match_parent"
+        android:layout_weight="0.3"
+        style="@style/FrameLayout_">
+
+        <GridView
+            android:background = "@android:color/white"
+            android:id = "@+id/gv_in_simple_list_item_company_feed"
+            android:columnWidth = "@dimen/column_width_gv_in_all_company_feed"
+            android:layout_margin = "5dp"
+            android:numColumns = "3"
+            android:verticalSpacing = "5dp"
+            android:horizontalSpacing = "10dp"
+            android:layout_height="230dp"
+            style = "@style/GridView_" />
+
+    </FrameLayout>
+
+</LinearLayout>
