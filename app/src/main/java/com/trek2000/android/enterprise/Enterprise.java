@@ -14,6 +14,8 @@ import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.decode.BaseImageDecoder;
+import com.nostra13.universalimageloader.core.decode.ImageDecoder;
 
 import define.Constants;
 import singleton.Item;
@@ -23,6 +25,7 @@ import ui.fragment.company.AllCompanyFeedFragment;
 import ui.fragment.company.SelectCompanyFragment;
 import ui.fragment.drawer.NavigationDrawerFragment;
 import ui.fragment.drawer.NavigationDrawerInNotificationsFragment;
+import utils.SmartUriDecoder;
 
 import static define.SharedPreference.PREFS;
 import static define.SharedPreference.mSp;
@@ -174,6 +177,9 @@ public class Enterprise extends ActionBarActivity implements NavigationDrawerFra
         // Set title is null
         setTitle("");
 
+        ImageDecoder smartUriDecoder = new SmartUriDecoder(
+                getContentResolver(), new BaseImageDecoder(false));
+
         // This configuration tuning is custom.
         // You can tune every option, you may tune some of them,
         // or you can create default configuration by
@@ -184,7 +190,8 @@ public class Enterprise extends ActionBarActivity implements NavigationDrawerFra
                         .threadPriority(Thread.NORM_PRIORITY - 2)
                         .denyCacheImageMultipleSizesInMemory()
                         .diskCacheFileNameGenerator(new Md5FileNameGenerator())
-                        .diskCacheSize(50 * 1024 * 1024) // 50 Mb
+                        .diskCacheSize(50 * 1024 * 1024) // 50 Mb.
+                        .imageDecoder(smartUriDecoder)
                         .tasksProcessingOrder(QueueProcessingType.LIFO)
                         .writeDebugLogs() // Remove for release app
                         .build();

@@ -1,8 +1,14 @@
 package ui.fragment.review;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +21,10 @@ import android.widget.VideoView;
 
 import com.trek2000.android.enterprise.R;
 
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import ui.activity.CustomGallery;
 import utils.Utils;
 
@@ -25,10 +35,12 @@ public class ReviewFragment extends Fragment
      * String section
      */
     private static String FILE_PATH = null;
+
     /**
      * Data section
      */
     private Bitmap mBitmap;
+
     /**
      * View section
      */
@@ -93,8 +105,10 @@ public class ReviewFragment extends Fragment
         super.onDestroyView();
 
         // Recycle Bitmap to avoid Out
-        mBitmap.recycle();
-        mBitmap = null;
+        if (mBitmap != null) {
+            mBitmap.recycle();
+            mBitmap = null;
+        }
 
         // Should Show Top Bar in Custom Gallery if get out of current page
         CustomGallery.mLlAlbumName.setVisibility(View.VISIBLE);
@@ -125,21 +139,19 @@ public class ReviewFragment extends Fragment
         /**todo
          * Check is video or photo to show views correctly
          */
-        if (Utils.isPhotoOrVideo(FILE_PATH)) {
+//        if (Utils.isPhotoOrVideo(mFile.getAbsolutePath())) {
             // Photo
             mIvPreview.setVisibility(View.VISIBLE);
 
-            // todo
-            mIvPreview.setImageResource(R.drawable.iv_default_avatar);
-//            try {
-//                mBitmap = BitmapFactory.decodeFile(FILE_PATH);
-//                mIvPreview.setImageBitmap(mBitmap);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-        } else {
-            // Videos
-        }
+            try {
+                mBitmap = getBitmapFromUri(getActivity(), Uri.parse(FILE_PATH));
+                mIvPreview.setImageBitmap(mBitmap);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+//        } else {
+//            // Videos
+//        }
 
         // Set listener
         mIbtnBack.setOnClickListener(this);
@@ -162,4 +174,17 @@ public class ReviewFragment extends Fragment
     /**
      * The others methods
      */
+
+    private Bitmap getBitmapFromUri(Context mContext, Uri contentUri) {
+        String path = null;
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = mContext.getContentResolver().query(contentUri, projection, null, null, null);
+        if (cursor.moveToFirst()) {
+            int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            path = cursor.getString(columnIndex);
+        }
+        cursor.close();
+        Bitmap bitmap = BitmapFactory.decodeFile(path);
+        return bitmap;
+    }
 }

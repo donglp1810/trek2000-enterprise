@@ -1,6 +1,9 @@
 package model;
 
 import android.content.Context;
+import android.net.Uri;
+
+import java.net.URI;
 
 /**
  * Created by trek2000 on 12/2/2015.
@@ -10,10 +13,13 @@ public class File {
     /**
      * String section
      */
+    private String DURATION_OF_VIDEO;
+
     private String FILE_NAME;
     private String FILE_PATH;
 
     private boolean isChecked = false;
+    private boolean isVideo = false;
 
     /**
      * The others section
@@ -29,6 +35,10 @@ public class File {
         this.isChecked = isChecked;
     }
 
+    public String getDurationOfVideo() {
+        return DURATION_OF_VIDEO;
+    }
+
     public String getFileName() {
         return FILE_NAME;
     }
@@ -41,7 +51,19 @@ public class File {
         return isChecked;
     }
 
+    public boolean isVideo() {
+        return isVideo;
+    }
+
     public void setChecked(boolean isChecked) {
         this.isChecked = isChecked;
+    }
+
+    public void setDurationOfVideo(String DURATION_OF_VIDEO) {
+        this.DURATION_OF_VIDEO = DURATION_OF_VIDEO;
+    }
+
+    public void setVideo(boolean isVideo) {
+        this.isVideo = isVideo;
     }
 }

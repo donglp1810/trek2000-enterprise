@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,7 +18,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.media.ThumbnailUtils;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -65,6 +68,7 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -338,7 +342,7 @@ public class Utils {
         options.inPreferQualityOverSpeed = true;
         options.inJustDecodeBounds = false;
         options.inDither = false;
-        options.inSampleSize = 2;
+        options.inSampleSize = 4;
         options.inScaled = false;
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
 
@@ -458,6 +462,18 @@ public class Utils {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(milliSeconds);
         return formatter.format(calendar.getTime());
+    }
+
+    public static String getDurationOfVideo(Context mContext, String FILE_PATH) {
+        MediaPlayer mp = MediaPlayer.create(mContext, Uri.parse(FILE_PATH));
+        int duration = mp.getDuration();
+        mp.release();
+        /*convert millis to appropriate time*/
+        return String.format("%d:%d",
+                TimeUnit.MILLISECONDS.toMinutes(duration),
+                TimeUnit.MILLISECONDS.toSeconds(duration) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration))
+        );
     }
 
     /**
@@ -691,7 +707,39 @@ public class Utils {
     /**
      * Get all images from Sd card to load into Custom Gallery
      */
-    public static ArrayList<File> getPhotoAndVideoFromSdCard(boolean isFolderOrFile, ArrayList<File> mAlFiles, File dir) {
+    public static ArrayList<File> getPhotoAndVideoFromSdCard(ArrayList<File> mAlFiles, File dir) {
+        File mFileList[] = dir.listFiles();
+        if (mFileList != null && mFileList.length > 0) {
+            for (int i = 0; i < mFileList.length; i++) {
+                if (mFileList[i].isDirectory() & !mFileList[i].isHidden()) {
+                    // Add folder if need
+                    if (!mAlFiles.contains(mFileList[i]))
+                        mAlFiles.add(mFileList[i]);
+
+                    // Should skip folder Android before add new files
+                    getPhotoAndVideoFromSdCard(mAlFiles, mFileList[i]);
+                } else if (mFileList[i].isFile() & !mFileList[i].isHidden()) {
+
+                    /**
+                     * Check to put only photo, video files to show in Custom Gallery
+                     */
+                    if (mFileList[i].getName().toLowerCase().endsWith(Extension.JPEG)
+                            | mFileList[i].getName().toLowerCase().endsWith(Extension.JPG)
+                            | mFileList[i].getName().toLowerCase().endsWith(Extension.PNG)
+                            | mFileList[i].getName().toLowerCase().endsWith(Extension.MP4)) {
+                        mAlFiles.add(mFileList[i]);
+                    }
+                }
+            }
+        }
+        return mAlFiles;
+    }
+
+    /**
+     * Get all images from Sd card to load into Custom Gallery
+     */
+    public static ArrayList<File> getPhotoAndVideoFromSdCard(
+            boolean isFolderOrFile, ArrayList<File> mAlFiles, File dir) {
         File mFileList[] = dir.listFiles();
         if (mFileList != null && mFileList.length > 0) {
             for (int i = 0; i < mFileList.length; i++) {
@@ -712,10 +760,10 @@ public class Utils {
                     if (!isFolderOrFile) {
 //                        Log.i("", "getName() " + mFileList[i].getName());
 
-                        if (mFileList[i].getName().endsWith(".png")
-                                | mFileList[i].getName().endsWith(".jpg")
-                                | mFileList[i].getName().endsWith(".jpeg")
-                                | mFileList[i].getName().endsWith(".mp4")) {
+                        if (mFileList[i].getName().toLowerCase().endsWith(Extension.JPEG)
+                                | mFileList[i].getName().toLowerCase().endsWith(Extension.JPG)
+                                | mFileList[i].getName().toLowerCase().endsWith(Extension.PNG)
+                                | mFileList[i].getName().toLowerCase().endsWith(Extension.MP4)) {
                             mAlFiles.add(mFileList[i]);
                         }
                     }
@@ -725,34 +773,62 @@ public class Utils {
         return mAlFiles;
     }
 
-//    public static List getAlbumThumbnails(Context context){
-//        final String[] projection = {MediaStore.Images.Thumbnails.DATA, MediaStore.Images.Thumbnails._ID};
-//
-//        Cursor cursor = context.getContentResolver().query(
-//                MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
-//                projection, // Which columns to return
-//                null,       // Return all rows
-//                null,
-//                MediaStore.Images.Thumbnails.IMAGE_ID);
-//
-//        // Get the column index of the Thumbnails Image ID
-//        int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails.DATA);
-//
-//        Log.i("", " " + cursor + " getCount " + cursor.getCount());
-//        if( cursor != null && cursor.getCount() > 0 ) {
-//            String uri = cursor.getString(columnIndex);
-//
-//            Log.i("", "uri " + uri);
-//        }
-//
-//        return null;
-//    }
+    /**
+     *
+     * @param isPhotoOrVideo
+     * @param context
+     * @param imageFile
+     * @return
+     */
+    public static Uri getImagePreviewOfUri(boolean isPhotoOrVideo, Context context, File imageFile) {
+        String FILE_PATH = imageFile.getAbsolutePath();
+
+        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+
+        Cursor mCursor = null;
+        if (isPhotoOrVideo)
+            mCursor = context.getContentResolver().query(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    new String[]{MediaStore.Images.Media._ID},
+                    MediaStore.Images.Media.DATA + "=? ",
+                    new String[]{FILE_PATH}, null);
+        else
+            mCursor = context.getContentResolver().query(
+                    MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                    new String[]{MediaStore.Video.Media._ID},
+                    MediaStore.Video.Media.DATA + "=? ",
+                    new String[]{FILE_PATH}, null);
+
+        if (mCursor != null && mCursor.moveToFirst()) {
+            int id = mCursor.getInt(mCursor.getColumnIndex(MediaStore.MediaColumns._ID));
+
+            if (isPhotoOrVideo)
+                return Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + id);
+            else
+                return Uri.withAppendedPath(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, "" + id);
+        } else {
+            if (imageFile.exists()) {
+                ContentValues values = new ContentValues();
+
+                if (isPhotoOrVideo) {
+                    values.put(MediaStore.Images.Media.DATA, FILE_PATH);
+                    return context.getContentResolver().insert(
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                } else {
+                    values.put(MediaStore.Video.Media.DATA, FILE_PATH);
+                    return context.getContentResolver().insert(
+                            MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
+                }
+            } else {
+                return null;
+            }
+        }
+    }
 
     /**
      * Get real path from Uri
      *
      * @param context
-     * @param contentUri
      * @return
      */
     public static String getRealPathFromURI(Context context, Uri contentUri) {
@@ -775,23 +851,6 @@ public class Utils {
         }
     }
 
-    /**
-     *
-     */
-    public static Bitmap getThumbnail(String path) {
-        try {
-            ExifInterface exif = new ExifInterface(path);
-            byte[] imageData = exif.getThumbnail();
-
-            //it can not able to get the thumbnail for very small images , so better to check null
-            if (imageData != null)
-                return BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
 
     /**
      * Get a file path from a Uri. This will get the the path for Storage Access
@@ -935,6 +994,51 @@ public class Utils {
         return SIZE;
     }
 
+    /**
+     *
+     * @param mContext
+     * @param media_type_of_latest_bitmap_folder_thumbnail
+     * @param mBitmap
+     * @param THUMBNAIL_PATH
+     * @return
+     */
+    public static Bitmap getThumbnail(
+            Context mContext,
+            boolean media_type_of_latest_bitmap_folder_thumbnail,
+            Bitmap mBitmap, String THUMBNAIL_PATH) {
+        if (media_type_of_latest_bitmap_folder_thumbnail) {
+            // Photos
+            Cursor ca = mContext.getContentResolver().query(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    new String[]{MediaStore.MediaColumns._ID},
+                    MediaStore.MediaColumns.DATA + "=?", new String[]{THUMBNAIL_PATH}, null);
+            if (ca != null && ca.moveToFirst()) {
+                int id = ca.getInt(ca.getColumnIndex(MediaStore.MediaColumns._ID));
+                ca.close();
+                return MediaStore.Images.Thumbnails.getThumbnail(
+                        mContext.getContentResolver(),
+                        id,
+                        MediaStore.Images.Thumbnails.MICRO_KIND,
+                        null);
+            }
+
+            ca.close();
+        } else {
+            // Videos
+//            mBitmap = ThumbnailUtils.createVideoThumbnail(
+//                    THUMBNAIL_PATH, ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
+//            mBitmap = ThumbnailUtils.extractThumbnail(
+//                    mBitmap,
+//                    mContext.getResources().getInteger(R.integer.layout_height_item_in_custom_gallery),
+//                    mContext.getResources().getInteger(R.integer.layout_width_item_in_custom_gallery));
+
+            mBitmap = ThumbnailUtils.createVideoThumbnail(THUMBNAIL_PATH,
+                    MediaStore.Images.Thumbnails.MINI_KIND);
+
+        }
+        return mBitmap;
+    }
+
     public static String getWifiApIpAddress() {
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en
@@ -986,44 +1090,6 @@ public class Utils {
     }
 
     /**
-     * Hide progress dialog
-     */
-    public static void hideWaitingDialog() {
-        if (mDialogWaiting != null) {
-            mDialogWaiting.dismiss();
-            mDialogWaiting = null;
-        }
-    }
-
-    /**
-     * Hide progress dialog
-     */
-    public static void hideProgressDialog() {
-        if (mPdWaiting != null) {
-            mPdWaiting.dismiss();
-            mPdWaiting = null;
-        }
-    }
-
-    /**
-     * Hidden keyboard of edit text
-     */
-    public static void hideSoftKeyboard(Context mContext, EditText et) {
-        InputMethodManager imm = (InputMethodManager) mContext
-                .getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(et.getApplicationWindowToken(), 0);
-    }
-
-    /**
-     * Hidden keyboard of edit text
-     */
-    public static void hideSoftKeyboard(Context mContext) {
-        ((Activity) mContext).getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-    }
-
-    /**
      * Initial data for full screen dialog
      */
     public static void initialFullWidthScreenDialog(Dialog dialog, int gravity) {
@@ -1053,17 +1119,17 @@ public class Utils {
      * @param FILE_PATH
      * @return
      */
-    public static boolean isPhotoOrVideo(String FILE_PATH) {
-        boolean is_photo_or_video = true;
+    public static int isPhotoOrVideo(String FILE_PATH) {
+        int is_photo_or_video = -1;
         // Media type
-        if (FILE_PATH.contains(Extension.JPEG)
-                | FILE_PATH.contains(Extension.JPG)
-                | FILE_PATH.contains(Extension.PNG)) {
-            // Set type : Photo - true
-            is_photo_or_video = true;
-        } else if (FILE_PATH.contains(Extension.MP4)) {
-            // Set type : Video - false
-            is_photo_or_video = false;
+        if (FILE_PATH.toLowerCase().contains(Extension.JPEG)
+                || FILE_PATH.toLowerCase().contains(Extension.JPG)
+                || FILE_PATH.toLowerCase().contains(Extension.PNG)) {
+            // Set type : Photo - true : 0
+            is_photo_or_video = 0;
+        } else if (FILE_PATH.toLowerCase().contains(Extension.MP4)) {
+            // Set type : Video - false : 1
+            is_photo_or_video = 1;
         }
 
         return is_photo_or_video;
@@ -1103,6 +1169,44 @@ public class Utils {
     public static boolean isWifiTurnedOn(Context mContext) {
         WifiManager wifi = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
         return wifi.isWifiEnabled();
+    }
+
+    /**
+     * Hide progress dialog
+     */
+    public static void hideWaitingDialog() {
+        if (mDialogWaiting != null) {
+            mDialogWaiting.dismiss();
+            mDialogWaiting = null;
+        }
+    }
+
+    /**
+     * Hide progress dialog
+     */
+    public static void hideProgressDialog() {
+        if (mPdWaiting != null) {
+            mPdWaiting.dismiss();
+            mPdWaiting = null;
+        }
+    }
+
+    /**
+     * Hidden keyboard of edit text
+     */
+    public static void hideSoftKeyboard(Context mContext, EditText et) {
+        InputMethodManager imm = (InputMethodManager) mContext
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(et.getApplicationWindowToken(), 0);
+    }
+
+    /**
+     * Hidden keyboard of edit text
+     */
+    public static void hideSoftKeyboard(Context mContext) {
+        ((Activity) mContext).getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
     }
 
     /**

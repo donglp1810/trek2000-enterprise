@@ -68,14 +68,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         // todo
         Camera.Parameters parameters = mCamera.getParameters();
 
-        parameters.setJpegQuality(100);
-        parameters.setPictureFormat(ImageFormat.JPEG);
-        parameters.setPreviewSize(
-                parameters.getSupportedPreviewSizes().get(0).width,
-                parameters.getSupportedPreviewSizes().get(0).height);
-//        parameters.setPictureSize(3264, 2176);
-
-//        for (Camera.Size size : parameters.getSupportedPictureSizes()) {
+        for (Camera.Size size : parameters.getSupportedPictureSizes()) {
 //            // 640 480
 //            // 960 720
 //            // 1024 768
@@ -87,22 +80,29 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 //            // 3264 1836
 //            // 2048 1152
 //            // 3264 2176
-//            Log.i("", "Pictures size " + size.width + " " + size.height);
-//        }
-        for (Camera.Size size : parameters.getSupportedPreviewSizes()) {
-            // 960 720
-            // 1280 720
-            // 640 480
-            // 352 288
-            // 320 240
-            Log.i("", "Preview size " + size.width + " " + size.height);
+            if (1600 <= size.width & size.width <= 1900) {
+                Log.i("", "Pictures size " + size.width + " " + size.height);
+
+                parameters.setPictureSize(size.width, size.height);
+                break;
+            }
         }
 
-        CustomCamera.mCamera.setParameters(parameters);
+//        parameters.setPictureSize(
+//                parameters.getSupportedPictureSizes().get(3).width,
+//                parameters.getSupportedPictureSizes().get(3).height);
+//        parameters.setPictureSize(2560, 1440);
 
-        Camera.Size size = CustomCamera.mCamera.getParameters().getPreviewSize();
-        // 960 720
-        Log.i("", "surfaceChanged " + size.width + " " + size.height);
+        try {
+            CustomCamera.mCamera.setParameters(parameters);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            parameters.setPictureSize(
+                    parameters.getSupportedPictureSizes().get(0).width,
+                    parameters.getSupportedPictureSizes().get(0).height);
+            CustomCamera.mCamera.setParameters(parameters);
+        }
 
         // start preview with new settings
         try {

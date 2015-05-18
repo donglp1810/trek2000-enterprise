@@ -1,5 +1,6 @@
 package ui.fragment.custom.gallery;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -30,10 +31,14 @@ public class AlbumInsideFragment extends Fragment
      * Data section
      */
     private ArrayList<model.File> mAlFiles = new ArrayList<model.File>();
+
     /**
      * String section
      */
     private boolean IS_LONG_CLICK_CONTINUE = false;
+
+    public static final String ARGUMENT_ALBUM_NAME = "ALBUM_NAME";
+    public static final String ARGUMENT_FOLDER_PATH = "FOLDER_PATH";
 
     /**
      * View section
@@ -45,9 +50,9 @@ public class AlbumInsideFragment extends Fragment
      */
 
     /**
-     * Listener section
+     *
+     * @return
      */
-
     public static Fragment newInstance() {
         AlbumInsideFragment fragment = new AlbumInsideFragment();
         return fragment;
@@ -76,7 +81,7 @@ public class AlbumInsideFragment extends Fragment
         super.onDestroyView();
 
         // Hide Upload text view after exit Album Inside fragment
-        CustomGallery.mTvUpload.setVisibility(View.INVISIBLE);
+//        CustomGallery.mTvUpload.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -99,7 +104,7 @@ public class AlbumInsideFragment extends Fragment
      */
     private void initialData() {
         // Show Upload text view
-        CustomGallery.mTvUpload.setVisibility(View.VISIBLE);
+//        CustomGallery.mTvUpload.setVisibility(View.VISIBLE);
 
         // Set listener
         mGv.setOnItemClickListener(this);
@@ -108,27 +113,99 @@ public class AlbumInsideFragment extends Fragment
         /**
          * Get folder path after selected Album
          */
-        String FOLDER_PATH = getArguments().getString(AlbumInsideFragment.class.getSimpleName());
+        String ALBUM_NAME = getArguments().getString(ARGUMENT_ALBUM_NAME);
+        String FOLDER_PATH = getArguments().getString(ARGUMENT_FOLDER_PATH);
 
         /**
-         * Read all photos & videos inside selected Album
+         * Read all photos & videos inside selected Album without taking care
+         * about sub-folder inside.
+         * Need list all of them.
          */
         ArrayList<File> mAlFileList = getAlbumInside(FOLDER_PATH);
+
+        /**
+         * Need set Title is selected Album
+         */
+        CustomGallery.mTvAlbumName.setText(ALBUM_NAME);
+
         // Should clear old data before add new data
-        if (!mAlFiles.isEmpty()) mAlFiles.clear();
+        if (!mAlFiles.isEmpty())    mAlFiles.clear();
 
         // Add item into array list
-        for (int i = 0; i < mAlFileList.size(); i++)
-            mAlFiles.add(new model.File(
-                    getActivity(), mAlFileList.get(i).getName(), mAlFileList.get(i).getAbsolutePath(), false));
+        try {
+            for (int i = 0; i < mAlFileList.size(); i++) {
+                File mFile = new File(mAlFileList.get(i).getAbsolutePath());
 
-        Log.i("", "size - " + mAlFileList.size());
+                if (mAlFileList.get(i).isFile()) {
+                    // Get image Uri from File path
+                    Uri mUri = null;
+                    if (Utils.isPhotoOrVideo(mFile.getAbsolutePath()) == 0)
+                        mUri = Utils.getImagePreviewOfUri(
+                                true, getActivity(), mFile);
+                    else if (Utils.isPhotoOrVideo(mFile.getAbsolutePath()) == 1)
+                        mUri = Utils.getImagePreviewOfUri(
+                                false, getActivity(), mFile);
+
+                    if (mFile.exists() & mFile.isFile()) {
+                        // Add into array list
+                        model.File file = new model.File(
+                                getActivity(),
+                                mAlFileList.get(i).getName(),
+                                mUri.toString(), false);
+
+                        // Check file type to see it is photo or video
+                        if (Utils.isPhotoOrVideo(mFile.getAbsolutePath()) == 0)
+                            file.setVideo(false);
+                        else if (Utils.isPhotoOrVideo(mFile.getAbsolutePath()) == 1) {
+                            file.setVideo(true);
+
+                            // set duration of video
+                            file.setDurationOfVideo(Utils.getDurationOfVideo(
+                                    getActivity(), mFile.getAbsolutePath()));
+                        }
+
+                        // Add item into array list
+                        mAlFiles.add(file);
+                    } else if (mFile.exists() & mFile.isDirectory()) {
+                        ArrayList<File> mAl = new ArrayList<>();
+                        mAl = Utils.getPhotoAndVideoFromSdCard(
+                                mAl, new File(mFile.getAbsolutePath()));
+
+                        for (int j = 0; j < mAl.size(); j++) {
+                            // Add into array list
+                            if (mAl.get(j).isFile()) {
+                                model.File file = new model.File(
+                                        getActivity(),
+                                        mAlFileList.get(j).getName(),
+                                        mUri.toString(), false);
+
+                                // Check file type to see it is photo or video
+                                if (Utils.isPhotoOrVideo(mFile.getAbsolutePath()) == 0)
+                                    file.setVideo(false);
+                                else if (Utils.isPhotoOrVideo(mFile.getAbsolutePath()) == 1) {
+                                    file.setVideo(true);
+
+                                    // set duration of video
+                                    file.setDurationOfVideo(Utils.getDurationOfVideo(
+                                            getActivity(), mFile.getAbsolutePath()));
+                                }
+
+                                // Add into array list
+                                mAlFiles.add(file);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Set adapter
         mGv.setAdapter(new AlbumInsideAdapter(
                 getActivity(),
                 R.layout.simple_grid_item_in_fragment_album_inside,
-                mAlFileList));
+                mAlFiles));
     }
 
     private void initialViews(View v) {
@@ -144,7 +221,7 @@ public class AlbumInsideFragment extends Fragment
         File mFileFolder = new File(FOLDER_PATH);
 
         ArrayList<File> mAlFolders = new ArrayList<>();
-        mAlFolders = Utils.getPhotoAndVideoFromSdCard(false, mAlFolders, mFileFolder);
+        mAlFolders = Utils.getPhotoAndVideoFromSdCard(mAlFolders, mFileFolder);
 
         return mAlFolders;
     }
@@ -232,7 +309,7 @@ public class AlbumInsideFragment extends Fragment
 
             // Clear old hash map before continue
 
-            /**
+            /**todo
              * Transfer to Full Screen page after selected file
              * - Should pass File Path
              */

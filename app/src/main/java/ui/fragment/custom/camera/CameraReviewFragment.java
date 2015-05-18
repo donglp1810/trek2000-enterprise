@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
-import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,19 +12,17 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.MediaController;
-import android.widget.RelativeLayout;
 import android.widget.VideoView;
 
-import com.edmodo.cropper.CropImageView;
-import com.sprylab.android.widget.TextureVideoView;
 import com.trek2000.android.enterprise.R;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 
+import define.Constants;
 import ui.activity.CustomCamera;
 import utils.Utils;
 
@@ -47,14 +44,14 @@ public class CameraReviewFragment extends Fragment
      * View section
      */
     private Button mBtnRetake;
-    private TextureVideoView mVvVideo;
+//    private TextureVideoView mVvVideo;
 
     /**
      * Others section
      */
     private Button mBtnUse;
     private ImageView mIvPhoto;
-//    private VideoView mVvVideo;
+    private VideoView mVvVideo;
 
     /**
      * Listener section
@@ -127,7 +124,7 @@ public class CameraReviewFragment extends Fragment
 
         // Set Review
         // Need check the taken file is photo or video to set correctly
-        if (Utils.isPhotoOrVideo(FILE_PATH)) {
+        if (Utils.isPhotoOrVideo(FILE_PATH) == 0) {
             // Photo
 
             // Show Use Photo text
@@ -140,8 +137,8 @@ public class CameraReviewFragment extends Fragment
             /**
              * Show image on View correctly
              */
-            showPhotoOnUI();
-        } else {
+            showPhotoOnUI(true);
+        } else if (Utils.isPhotoOrVideo(FILE_PATH) == 1) {
             // Video
 
             // Show Use VDO text
@@ -162,69 +159,95 @@ public class CameraReviewFragment extends Fragment
         mBtnRetake = (Button) v.findViewById(R.id.btn_retake);
         mBtnUse = (Button) v.findViewById(R.id.btn_use);
         mIvPhoto = (ImageView) v.findViewById(R.id.iv_review_photo);
-//        mVvVideo = (VideoView) v.findViewById(R.id.vv_review_video);
-        mVvVideo = (TextureVideoView) v.findViewById(R.id.vv_review_video);
+        mVvVideo = (VideoView) v.findViewById(R.id.vv_review_video);
+//        mVvVideo = (reTextuVideoView) v.findViewById(R.id.vv_review_video);
     }
 
-    private void showPhotoOnUI() {
+    private void showPhotoOnUI(boolean is_success) {
         try {
-            Bitmap mBitmap = BitmapFactory.decodeFile(
-//                    FILE_PATH, Utils.getBitmapOptions());
-                    FILE_PATH);
+            Bitmap mBitmap = null;
 
-            // 640 x 480
-            Log.i("", " " + mBitmap.getWidth() + " " + mBitmap.getHeight());
-
-            // 1280 x 720
-            Log.i("", " " + CustomCamera.mCamera.getParameters().getPreviewSize().width
-                    + " " + CustomCamera.mCamera.getParameters().getPreviewSize().height);
+            // Check OutOfMemory error happened or not.
+            // If success, decode file normally
+            // If fail, need put sampleSize when decoding
+            if (is_success)
+                mBitmap = BitmapFactory.decodeFile(
+                        FILE_PATH);
+            else
+                mBitmap = BitmapFactory.decodeFile(
+                        FILE_PATH, Utils.getBitmapOptions());
 
             // Rotate Back photo only once in here
             Bitmap mBitmapRotated = Utils.rotateBackImage(mBitmap);
 
-            // todo Begin crop photo in here
+            // Begin crop photo in here
             if (CustomCamera.camera.isCropModeOrFullMode()) {
                 /**
                  * Crop mode
                  */
+
                 int width = mBitmapRotated.getWidth();
-                int height = mBitmapRotated.getHeight();
-                int newWidth = CameraPreviewFragment.crop_width;
+//                int height = mBitmapRotated.getHeight();
+//                int newWidth = CameraPreviewFragment.crop_width;
                 int newHeight = CameraPreviewFragment.crop_height;
 
                 // create matrix for the manipulation
                 Matrix matrix = new Matrix();
 
-                Log.i("", "" + width + " " + height + " " + newWidth + " " + newHeight);
+//                Log.i("", "Bitmap width - " + width + " Bitmap height " + height
+//                        + " new Bitmap width " + newWidth + " new Bitmap height " + newHeight);
 
                 // todo Should use best resolution from camera
                 // recreate the new Bitmap
                 Bitmap resizedBitmap = Bitmap.createBitmap(
                         mBitmapRotated,
                         // todo Define X, Y where to begin crop
-                        0, newHeight/2,
-                        newWidth, newHeight, matrix, true);
+                        0, newHeight/2 - 80,
+                        width, newHeight + 200, matrix, true);
 
                 mIvPhoto.setImageBitmap(resizedBitmap);
-            }
 
-            // Set image on View
-            if (CameraPreviewFragment.IS_BACK_CAMERA_OR_FRONT_CAMERA) {
-                // Back Camera
-                mIvPhoto.setImageBitmap(mBitmapRotated);
+                // todo Should overwrite the file inside sd card.
+                //create a file to write bitmap data
+                File f = new File(FILE_PATH);
+                f.createNewFile();
+
+                //Convert bitmap to byte array
+                Bitmap bitmap = resizedBitmap;
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+                byte[] bitmapdata = bos.toByteArray();
+
+                //write the bytes in file
+                FileOutputStream fos = new FileOutputStream(f);
+                fos.write(bitmapdata);
+                fos.flush();
+                fos.close();
             } else {
-                // Front Camera
+                /**
+                 * Full Screen mode
+                 */
 
-                // Rotate Front photo need again in here
-                Bitmap mBitmapRotatedFront = null;
-                if (!CameraPreviewFragment.IS_BACK_CAMERA_OR_FRONT_CAMERA) {
-                    mBitmapRotatedFront = Utils.rotateFrontImage(getActivity(), mBitmapRotated);
+                // Set image on View
+                if (CameraPreviewFragment.IS_BACK_CAMERA_OR_FRONT_CAMERA) {
+                    // Back Camera
+                    mIvPhoto.setImageBitmap(mBitmapRotated);
+                } else {
+                    // Front Camera
+
+                    // Rotate Front photo need again in here
+                    Bitmap mBitmapRotatedFront = null;
+                    if (!CameraPreviewFragment.IS_BACK_CAMERA_OR_FRONT_CAMERA) {
+                        mBitmapRotatedFront = Utils.rotateFrontImage(getActivity(), mBitmapRotated);
+                    }
+
+                    mIvPhoto.setImageBitmap(mBitmapRotatedFront);
                 }
-
-                mIvPhoto.setImageBitmap(mBitmapRotatedFront);
             }
         } catch (OutOfMemoryError e) {
             e.printStackTrace();
+
+            showPhotoOnUI(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -232,6 +255,8 @@ public class CameraReviewFragment extends Fragment
 
     private void showVideoOnUI() {
         File mFile = new File(FILE_PATH);
+
+        Log.i("", "FILE_PATH " + FILE_PATH);
 
         // ex. FILE PATH = /mnt/sdcard/Pictures/Enterprise/VID_20150327_143555.mp4
         mVvVideo.setVideoPath(mFile.getAbsolutePath());
@@ -244,7 +269,7 @@ public class CameraReviewFragment extends Fragment
         mVvVideo.requestFocus();
         mVvVideo.setBackgroundColor(Color.WHITE);
         mVvVideo.setMediaController(mMc);
-//        todo mVvVideo.setZOrderOnTop(true);
+        mVvVideo.setZOrderOnTop(true);
         mVvVideo.setOnTouchListener(new View.OnTouchListener() {
 
             @Override

@@ -4,22 +4,24 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.trek2000.android.enterprise.Enterprise;
 import com.trek2000.android.enterprise.R;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import custom_view.MarkableImageView;
+import model.File;
 
 /**
  * Created by trek2000 on 21/8/2014.
@@ -30,7 +32,7 @@ public class AlbumInsideAdapter extends BaseAdapter {
     /**
      * Data section
      */
-    private ArrayList<File> mAlAlbumItem = new ArrayList<File>();
+    private ArrayList<File> mAlAlbumItem = new ArrayList<>();
 
     /**
      * Interface section
@@ -53,7 +55,7 @@ public class AlbumInsideAdapter extends BaseAdapter {
         this.mAlAlbumItem = mAlAlbumItem;
 
         mDio = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.color.black)
+                .showImageOnLoading(R.drawable.iv_default_avatar)
                 .delayBeforeLoading(1000)
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
@@ -66,8 +68,6 @@ public class AlbumInsideAdapter extends BaseAdapter {
      * @return
      */
     public int getCount() {
-        Log.i("", "getCount " + mAlAlbumItem.size());
-
         return mAlAlbumItem.size();
     }
 
@@ -92,58 +92,90 @@ public class AlbumInsideAdapter extends BaseAdapter {
         /**
          * Begin draw items in Grid View
          */
-        ViewHolder viewHolder = null;
+        MarkableImageView markableImageView = null;
         if (convertView == null) {  // if it's not recycled, initialize some attributes\
-            // draw view item
-            LayoutInflater inflater = (LayoutInflater) mContext
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            markableImageView = new MarkableImageView(mContext);
+            markableImageView.setLayoutParams(new GridView.LayoutParams(
+                    mContext.getResources().getInteger(R.integer.height_file_view),
+                    mContext.getResources().getInteger(R.integer.width_file_view)));
+            markableImageView.setPadding(5, 5, 0, 0);
+            markableImageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            markableImageView.setTag(pos);
 
-            convertView = inflater.inflate(textViewResourceId, null);
-
-            // initial element of view item
-            viewHolder = new ViewHolder();
-            viewHolder.mIvItem = (MarkableImageView) convertView.findViewById(
-                    R.id.iv_in_simple_grid_item_in_fragment_album_inside);
-
-            convertView.setTag(viewHolder);
+            convertView = (MarkableImageView) markableImageView;
         } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+            markableImageView = (MarkableImageView) convertView;
+            markableImageView.setTag(pos);
+        }
+
+        /**
+         * check item selected or not and draw image select
+         */
+        if (mAlAlbumItem.get(pos).isChecked()) {
+            ((MarkableImageView) markableImageView.findViewWithTag(pos)).setChecked(true);
+        } else {
+            ((MarkableImageView) markableImageView.findViewWithTag(pos)).setChecked(false);
+        }
+
+        /**
+         * check item is video or not
+         */
+        if (mAlAlbumItem.get(pos).isVideo()) {
+            ((MarkableImageView) markableImageView.findViewWithTag(pos)).setVideo(true);
+
+            // Set duration of video
+            ((MarkableImageView) markableImageView.findViewWithTag(pos)).setDurationOfVideo(
+                    mAlAlbumItem.get(pos).getDurationOfVideo());
+        } else {
+            ((MarkableImageView) markableImageView.findViewWithTag(pos)).setVideo(false);
         }
 
         // Should load file from sd card by parsing Uri
-        String FILE_PATH = mAlAlbumItem.get(pos).getAbsolutePath();
+        String FILE_PATH = mAlAlbumItem.get(pos).getFilePath();
 
-        Log.i("", "FILE_PATH " + FILE_PATH);
+        // content://media/external/images/media/24415
 
-        // Display image
-        Enterprise.imageLoader.displayImage(
-                Uri.fromFile(new File(FILE_PATH)).toString(),
-                viewHolder.mIvItem, mDio,
-                new SimpleImageLoadingListener() {
-                    @Override
-                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+        String[] SPLIT = FILE_PATH.split("//");
 
-                    }
+        if (FILE_PATH != null) {
+            // Display image
 
-                    @Override
-                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                        if (loadedImage != null & view != null) {
-                            // todo
-                            ((MarkableImageView) view).setImageResource(R.drawable.iv_default_avatar);
-//                            ((ImageView) view).setImageBitmap(Bitmap.createScaledBitmap(
-//                                    loadedImage,
-//                                    mContext.getResources().getInteger(R.integer.width_file_view),
-//                                    mContext.getResources().getInteger(R.integer.height_file_view),
-//                                    false));
-                        }
-                    }
-                }, new ImageLoadingProgressListener() {
-                    @Override
-                    public void onProgressUpdate(
-                            String imageUri, View view, int current, int total) {
-                    }
-                });
+            /**
+             * Should use separate string to void wrap these words "//" to "/"
+             */
+            try {
+                Enterprise.imageLoader.displayImage(
+                        SPLIT[0] + "//" + SPLIT[1],
+                        markableImageView, mDio,
+                        new SimpleImageLoadingListener() {
+                            @Override
+                            public void onLoadingStarted(String imageUri, View view) {
+                            }
 
+                            @Override
+                            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                            }
+
+                            @Override
+                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                                if (loadedImage != null & view != null) {
+                                    ((ImageView) view).setImageBitmap(Bitmap.createScaledBitmap(
+                                            loadedImage,
+                                            mContext.getResources().getInteger(R.integer.width_file_view),
+                                            mContext.getResources().getInteger(R.integer.height_file_view),
+                                            false));
+                                }
+                            }
+                        }, new ImageLoadingProgressListener() {
+                            @Override
+                            public void onProgressUpdate(
+                                    String imageUri, View view, int current, int total) {
+                            }
+                        });
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
+        }
         return convertView;
     }
 

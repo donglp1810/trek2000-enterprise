@@ -2,4 +2,5 @@
     android:id="@+id/iv_in_simple_grid_item_in_fragment_album_inside"
     style="@style/ImageView__MatchParent"
     android:padding="1dp"
-    android:src="@drawable/iv_default_avatar" />
+    android:src="@drawable/iv_default_avatar"
+    />

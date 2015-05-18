@@ -11,6 +11,7 @@
     <custom_view.MarkableImageView
         android:id="@+id/iv_folder_thumbnail_in_simple_list_item_in_custom_gallery"
         style="@style/ImageView__MatchParent"
+        android:layout_height="70dp"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
         android:scaleType="fitCenter" />

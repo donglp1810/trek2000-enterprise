@@ -38,7 +38,7 @@ public class Constants {
     /**
      * stored Folder
      */
-    public static final String STORED_FOLDER = "Cloudstringers";
+    public static final String STORED_FOLDER = "Enterprise";
     /**
      * Action Bar
      */

@@ -5,6 +5,7 @@
     <string name="add">Add</string>
     <string name="add_">ADD</string>
     <string name="adding">Adding</string>
+    <string name="albums">Albums</string>
     <string name="all_company">ALL COMPANY</string>
     <string name="any_member_can_add_or_approve_members">Any member can add or approve members.</string>
     <string name="any_member_can_add_members_but_an_admin_must_approve_them">Any member can add members, but an admin must approve them.</string>

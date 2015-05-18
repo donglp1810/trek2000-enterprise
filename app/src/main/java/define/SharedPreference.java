@@ -10,7 +10,7 @@ public class SharedPreference {
     public static final String FIRMWARE_VERSION = "firmware_version";
     public static final String PASSWORD = "password";
 
-    public static final String PREFS = "cloudstringers";
+    public static final String PREFS = "enterprise";
 
     public static final String REGISTRATION_ID = "registration_id";
     public static final String USER_GLOBAL_ID = "globalID";

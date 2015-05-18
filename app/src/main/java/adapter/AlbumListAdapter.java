@@ -3,6 +3,7 @@ package adapter;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,7 @@ public class AlbumListAdapter extends BaseAdapter {
     /**
      * Data section
      */
-    private ArrayList<Album> mAl = new ArrayList<Album>();
+    private ArrayList<Album> mAlAlbumName = new ArrayList<>();
 
     /**
      * String section
@@ -44,17 +45,17 @@ public class AlbumListAdapter extends BaseAdapter {
         this.mContext = context;
         this.resource = resource;
 
-        this.mAl = mAl;
+        this.mAlAlbumName = mAl;
     }
 
     @Override
     public int getCount() {
-        return mAl.size();
+        return mAlAlbumName.size();
     }
 
     @Override
     public Album getItem(int position) {
-        return mAl.get(position);
+        return mAlAlbumName.get(position);
     }
 
     @Override
@@ -104,16 +105,20 @@ public class AlbumListAdapter extends BaseAdapter {
             viewHolder.mTvNumberOfVideos.setTag(pos);
         }
 
-        if (!mAl.isEmpty()) {
+        if (!mAlAlbumName.isEmpty()) {
             // Set OnClick listener for item
             viewHolder.mLl.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // Pass Folder Path to Fragment Album Inside:
                     Bundle arguments = new Bundle();
-                    arguments.putString(AlbumInsideFragment.class.getSimpleName(),
-                            mAl.get(pos).getFolderPath() + File.separator + mAl.get(pos).getAlbumName());
-                    AlbumInsideFragment fragment = (AlbumInsideFragment) AlbumInsideFragment.newInstance();
+                    arguments.putString(AlbumInsideFragment.ARGUMENT_ALBUM_NAME,
+                            mAlAlbumName.get(pos).getAlbumName());
+                    arguments.putString(AlbumInsideFragment.ARGUMENT_FOLDER_PATH,
+                            mAlAlbumName.get(pos).getFolderPath());
+
+                    AlbumInsideFragment fragment =
+                            (AlbumInsideFragment) AlbumInsideFragment.newInstance();
                     fragment.setArguments(arguments);
 
                     /**
@@ -132,19 +137,20 @@ public class AlbumListAdapter extends BaseAdapter {
 
             // Set Folder thumbnail : Set latest image in every folder
             ((MarkableImageView) viewHolder.mIvFolderThumbnail).setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            if (mAl.get(pos).getBitmapFolderThumbnail() != null)
+            if (mAlAlbumName.get(pos).getBitmapFolderThumbnail() != null)
                 ((MarkableImageView) viewHolder.mIvFolderThumbnail.findViewWithTag(pos))
-                        .setImageBitmap(mAl.get(pos).getBitmapFolderThumbnail());
+                        .setImageBitmap(mAlAlbumName.get(pos).getBitmapFolderThumbnail());
             else
                 ((MarkableImageView) viewHolder.mIvFolderThumbnail.findViewWithTag(pos))
                         .setImageResource(R.drawable.iv_empty_album);
+
             // Set Album Name
-            if (mAl.get(pos).getAlbumName() != null)
+            if (mAlAlbumName.get(pos).getAlbumName() != null)
                 ((TextView) viewHolder.mTvAlbumName.findViewWithTag(pos))
-                        .setText(mAl.get(pos).getAlbumName());
+                        .setText(mAlAlbumName.get(pos).getAlbumName());
 
             // Set Media Type
-            if (mAl.get(pos).getMediaTypeOfLatestBitmapFolderThumbnail() == true)
+            if (mAlAlbumName.get(pos).getMediaTypeOfLatestBitmapFolderThumbnail() == true)
                 // Set type : Photo
                 ((MarkableImageView) viewHolder.mIvFolderThumbnail.findViewWithTag(pos))
                         .setVideo(false);
@@ -155,14 +161,14 @@ public class AlbumListAdapter extends BaseAdapter {
 
             // Set number of files : Image & Video
             ((TextView) viewHolder.mTvNumberOfPhotos.findViewWithTag(pos))
-                    .setText(mAl.get(pos).getNumberOfPhotos() + "");
+                    .setText(mAlAlbumName.get(pos).getNumberOfPhotos() + "");
             ((TextView) viewHolder.mTvNumberOfVideos.findViewWithTag(pos))
-                    .setText(mAl.get(pos).getNumberOfVideos() + "");
+                    .setText(mAlAlbumName.get(pos).getNumberOfVideos() + "");
 
             // If both number of photo & number of video are empty
             // should show empty album
-            if (Integer.valueOf(mAl.get(pos).getNumberOfPhotos().split(" ")[0]) == 0
-                    & Integer.valueOf(mAl.get(pos).getNumberOfVideos().split(" ")[0]) == 0)
+            if (Integer.valueOf(mAlAlbumName.get(pos).getNumberOfPhotos().split(" ")[0]) == 0
+                    & Integer.valueOf(mAlAlbumName.get(pos).getNumberOfVideos().split(" ")[0]) == 0)
                 ((MarkableImageView) viewHolder.mIvFolderThumbnail.findViewWithTag(pos))
                         .setImageResource(R.drawable.iv_empty_album);
         }

@@ -19,31 +19,12 @@ public class CustomGallery extends FragmentActivity
         implements View.OnClickListener {
 
     public static LinearLayout mLlAlbumName;
+    public static TextView mTvAlbumName;
     public static TextView mTvUpload;
     /**
      * View section
      */
     private ImageButton mIbtnBack;
-
-    /**
-     * Basic methods
-     */
-
-    public static void modifyUploadTextView(Context mContext, boolean visible) {
-        /**
-         * If visible is true
-         * - Enable = true, show Orange text color
-         * If visible is false
-         * - Enable = false, show Gray text color
-         */
-        if (visible) {
-            mTvUpload.setEnabled(true);
-            mTvUpload.setTextColor(mContext.getResources().getColor(R.color.orange_light));
-        } else {
-            mTvUpload.setEnabled(false);
-            mTvUpload.setTextColor(mContext.getResources().getColor(R.color.gray_dark_in_under_action_bar));
-        }
-    }
 
     /**
      * @param view
@@ -60,7 +41,7 @@ public class CustomGallery extends FragmentActivity
             case R.id.tv_upload_in_activity_custom_gallery:
                 // todo After selected files in Folder page,
                 // begin upload after closed Activity Custom Gallery
-                finish();
+//                finish();
 
                 // todo transfer Array List had selected files inside to Enterprise activity
                 break;
@@ -78,13 +59,11 @@ public class CustomGallery extends FragmentActivity
                 R.id.fl_in_activity_custom_gallery, AlbumListFragment.newInstance())
                 .commitAllowingStateLoss();
 
-        initialVariables();
+        initialViews();
         initialData();
-    }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+        // Always set default name of Title is "Albums"
+        mTvAlbumName.setText(getString(R.string.albums));
     }
 
     /**
@@ -99,9 +78,30 @@ public class CustomGallery extends FragmentActivity
         modifyUploadTextView(this, false);
     }
 
-    private void initialVariables() {
+    private void initialViews() {
         mIbtnBack = (ImageButton) findViewById(R.id.ibtn_back_in_activity_custom_gallery);
         mLlAlbumName = (LinearLayout) findViewById(R.id.ll_album_name_in_activity_custom_gallery);
+        mTvAlbumName = (TextView) findViewById(R.id.tv_album_name_in_activity_custom_gallery);
         mTvUpload = (TextView) findViewById(R.id.tv_upload_in_activity_custom_gallery);
+    }
+
+    /**
+     * Basic methods
+     */
+
+    public static void modifyUploadTextView(Context mContext, boolean visible) {
+        /**
+         * If visible is true
+         * - Enable = true, show Orange text color
+         * If visible is false
+         * - Enable = false, show Gray text color
+         */
+//        if (visible) {
+//            mTvUpload.setEnabled(true);
+//            mTvUpload.setTextColor(mContext.getResources().getColor(R.color.orange_light));
+//        } else {
+//            mTvUpload.setEnabled(false);
+//            mTvUpload.setTextColor(mContext.getResources().getColor(R.color.gray_dark_in_under_action_bar));
+//        }
     }
 }

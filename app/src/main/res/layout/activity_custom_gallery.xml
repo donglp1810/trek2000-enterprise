@@ -14,6 +14,7 @@
             android:src="@drawable/ibtn_back" />
 
         <TextView
+            android:id="@+id/tv_album_name_in_activity_custom_gallery"
             style="@style/TextView__Title"
             android:layout_height="match_parent"
             android:layout_weight="0.4"
@@ -25,9 +26,10 @@
             style="@style/TextView__Title"
             android:layout_height="match_parent"
             android:layout_weight="1.1"
+            android:background="@drawable/selector_transparent"
             android:text="@string/upload"
             android:textColor="@color/gray_dark_in_under_action_bar"
-            android:visibility="invisible" />
+            android:visibility="visible" />
 
     </LinearLayout>
 
